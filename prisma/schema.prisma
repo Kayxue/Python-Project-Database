@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Order {
+  id     String   @id @default(cuid())
+  big    Int
+  medium Int
+  things things[]
+}
+
+model things {
+  id            String       @id @default(cuid())
+  name          String
+  d             Order        @relation(fields: [orderId], references: [id])
+  orderId       String
+  OrderDetail   OrderDetail? @relation(fields: [orderDetailId], references: [id])
+  orderDetailId String?
+}
+
+model OrderDetail {
+  id     String   @id @default(cuid())
+  orders things[]
+}
