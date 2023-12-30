@@ -27,7 +27,8 @@ export class OrderController {
   @ApiBody({ type: PostOrderBody })
   @ApiResponse({
     status: 201,
-    description: 'An order has been successfully created.',
+    description:
+      'An order has been successfully created, and will return an Order Object',
   })
   @ApiResponse({
     status: 400,
@@ -37,8 +38,17 @@ export class OrderController {
     return this.orderService.postOrder(body);
   }
 
-  @ApiQuery({ name: 'id', required: false })
-  @ApiResponse({ status: 200, description: 'Get data completed' })
+  @ApiQuery({
+    name: 'id',
+    required: false,
+    description:
+      'Order you want to find, leave empty if you want to get all order in database',
+  })
+  @ApiResponse({
+    status: 200,
+    description:
+      "Get data completed, will return all order in database, or return an order data if id query is provided, or empty object if can't find any order with given order id",
+  })
   @Get('get')
   public async getOrder(@Query('id') orderId?: string) {
     return (await this.orderService.getOrder(orderId)) ?? {};
