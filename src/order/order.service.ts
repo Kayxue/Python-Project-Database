@@ -40,12 +40,12 @@ export class OrderService {
   public async getOrder(orderId: string) {
     if (!orderId) {
       return this.prismaService.orderDetail.findMany({
-        include: { orders: true },
+        include: { orders: { include: { data: true } } },
       });
     }
     return this.prismaService.orderDetail.findUnique({
       where: { id: orderId },
-      include: { orders: true },
+      include: { orders: { include: { data: true } } },
     });
   }
 }
