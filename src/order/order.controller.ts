@@ -12,7 +12,13 @@ import { PostOrderBody } from 'Types/RequestTypes';
 export class OrderController {
   public constructor(private orderService: OrderService) {}
 
-  @UsePipes(ValidationPipe)
+  @UsePipes(
+    new ValidationPipe({
+      disableErrorMessages: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
   @Post('post')
   public async postOrder(@Body() body: PostOrderBody) {
     return this.orderService.postOrder(body);
