@@ -2,14 +2,13 @@
 import { Injectable } from '@nestjs/common';
 import { OrderDetail } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
+import { PostOrderBody } from 'Types/RequestTypes';
 
 @Injectable()
 export class OrderService {
   public constructor(private prismaService: PrismaService) {}
 
-  public async postOrder(data: {
-    orders: { name: string; data: { big: number; medium: number } }[];
-  }): Promise<OrderDetail> {
+  public async postOrder(data: PostOrderBody): Promise<OrderDetail> {
     const result = await this.prismaService.orderDetail.create({
       data: {
         orders: {
