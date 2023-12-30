@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { IsInt, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsInt, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 
 export class ItemData{
     @IsInt()
@@ -22,7 +22,7 @@ export class OrdersItem {
 }
 
 export class PostOrderBody {
-  @ValidateNested({ each: true })
   @IsNotEmpty()
+  @IsArray()
   public readonly orders: OrdersItem[];
 }

@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -14,7 +17,6 @@ export class OrderController {
 
   @UsePipes(
     new ValidationPipe({
-      disableErrorMessages: true,
       whitelist: true,
       forbidNonWhitelisted: true,
     }),
@@ -22,5 +24,10 @@ export class OrderController {
   @Post('post')
   public async postOrder(@Body() body: PostOrderBody) {
     return this.orderService.postOrder(body);
+  }
+
+  @Get('get')
+  public async getOrder(@Query('id') orderId: string) {
+    return this.orderService.getOrder(orderId);
   }
 }
