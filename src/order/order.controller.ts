@@ -9,7 +9,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { PostOrderBody } from 'Types/RequestTypes';
+import { PostOrderBody } from '../../Types/RequestTypes';
 
 @Controller('order')
 export class OrderController {
