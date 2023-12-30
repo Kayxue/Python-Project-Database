@@ -28,6 +28,6 @@ export class OrderController {
 
   @Get('get')
   public async getOrder(@Query('id') orderId: string) {
-    return this.orderService.getOrder(orderId);
+    return (await this.orderService.getOrder(orderId)) ?? {};
   }
 }
