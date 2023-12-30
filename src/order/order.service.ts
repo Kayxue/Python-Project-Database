@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrderDetail } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
-import { PostOrderBody } from '../../Types/RequestTypes';
+import { PostOrderBody } from '../../Types/RequestTypes.dto';
 
 @Injectable()
 export class OrderService {
@@ -37,7 +37,7 @@ export class OrderService {
     return result;
   }
 
-  public async getOrder(orderId: string) {
+  public async getOrder(orderId?: string) {
     if (!orderId) {
       return this.prismaService.orderDetail.findMany({
         include: { orders: { include: { data: true } } },

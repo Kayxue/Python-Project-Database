@@ -3,13 +3,14 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { PostOrderBody } from '../../Types/RequestTypes';
+import { PostOrderBody } from '../../Types/RequestTypes.dto';
 
 @Controller('order')
 export class OrderController {
@@ -26,8 +27,13 @@ export class OrderController {
     return this.orderService.postOrder(body);
   }
 
-  @Get('get')
-  public async getOrder(@Query('id') orderId: string) {
+  @Get('get/:id')
+  public async getOrder(@Param('id') orderId: string) {
     return (await this.orderService.getOrder(orderId)) ?? {};
+  }
+
+  @Get('get')
+  public async getOrders() {
+    return this.orderService.getOrder();
   }
 }
