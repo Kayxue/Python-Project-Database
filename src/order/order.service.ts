@@ -2,7 +2,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrderDetail } from '@prisma/client';
 import { PrismaService } from '../prisma.service';
-import { PostOrderBody } from 'Types/RequestTypes';
+import { PostOrderBody } from '../../Types/RequestTypes';
 
 @Injectable()
 export class OrderService {
