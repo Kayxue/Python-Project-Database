@@ -2,7 +2,9 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Query,
   UsePipes,
@@ -10,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { PostOrderBody } from '../../Types/RequestTypes.dto';
-import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('order')
 export class OrderController {
@@ -22,7 +24,6 @@ export class OrderController {
       forbidNonWhitelisted: true,
     }),
   )
-  @Post('post')
   @ApiBody({ type: PostOrderBody })
   @ApiResponse({
     status: 201,
@@ -33,6 +34,7 @@ export class OrderController {
     status: 400,
     description: 'Post body not complete or is empty',
   })
+  @Post('post')
   public async postOrder(@Body() body: PostOrderBody) {
     return this.orderService.postOrder(body);
   }
@@ -51,5 +53,19 @@ export class OrderController {
   @Get('get')
   public async getOrder(@Query('id') orderId?: string) {
     return (await this.orderService.getOrder(orderId)) ?? {};
+  }
+
+  @ApiParam({ name: 'id', type: () => String })
+  @ApiResponse({
+    status: 200,
+    description: 'Delete order completed',
+  })
+  @ApiResponse({
+    status: 400,
+    description: "Can't find the order",
+  })
+  @Delete('delete/:id')
+  public async deleteOrder(@Param('id') orderId: string) {
+    return this.orderService.deleteOrder(orderId);
   }
 }
