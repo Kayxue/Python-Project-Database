@@ -55,7 +55,7 @@ export class OrderController {
     return (await this.orderService.getOrder(orderId)) ?? {};
   }
 
-  @ApiParam({ name: 'id', type: () => String })
+  @ApiParam({ name: 'id', type: () => String, description: 'Order to delete' })
   @ApiResponse({
     status: 200,
     description: 'Delete order completed',
