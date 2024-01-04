@@ -19,6 +19,7 @@ async function bootstrap() {
       'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',
     ],
     customCssUrl: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
       'https://raw.githubusercontent.com/ostranme/swagger-ui-themes/develop/themes/3.x/theme-flattop.css',
     ],
   });
