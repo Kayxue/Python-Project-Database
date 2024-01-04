@@ -9,7 +9,7 @@ export class OrderService {
   public constructor(private prismaService: PrismaService) {}
 
   public async postOrder(data: PostOrderBody): Promise<OrderDetail> {
-    const result = await this.prismaService.orderDetail.create({
+    return this.prismaService.orderDetail.create({
       data: {
         orders: {
           create: data.orders.map((e) => {
@@ -33,8 +33,6 @@ export class OrderService {
         },
       },
     });
-
-    return result;
   }
 
   public async getOrder(orderId?: string) {
