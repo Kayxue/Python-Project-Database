@@ -8,18 +8,11 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model Order {
-  id     String   @id @default(cuid())
-  big    Int
-  medium Int
-  things things[]
-}
-
 model things {
   id            String       @id @default(cuid())
   name          String
-  data          Order        @relation(fields: [orderId], references: [id])
-  orderId       String
+  big           Int
+  medium        Int
   OrderDetail   OrderDetail? @relation(fields: [orderDetailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   orderDetailId String?
 }

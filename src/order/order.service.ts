@@ -15,22 +15,14 @@ export class OrderService {
           create: data.orders.map((e) => {
             return {
               name: e.name,
-              data: {
-                create: {
-                  big: e.data.big,
-                  medium: e.data.medium,
-                },
-              },
+              big: e.data.big,
+              medium: e.data.medium,
             };
           }),
         },
       },
       include: {
-        orders: {
-          include: {
-            data: true,
-          },
-        },
+        orders: true,
       },
     });
   }
@@ -38,30 +30,22 @@ export class OrderService {
   public async getOrder(orderId?: string) {
     if (!orderId) {
       return this.prismaService.orderDetail.findMany({
-        include: { orders: { include: { data: true } } },
+        include: { orders: true },
       });
     }
     return this.prismaService.orderDetail.findUnique({
       where: { id: orderId },
-      include: { orders: { include: { data: true } } },
+      include: { orders: true },
     });
   }
 
   public async deleteOrder(orderId: string) {
     const result = await this.prismaService.orderDetail.findUnique({
       where: { id: orderId },
-      include: { orders: { include: { data: true } } },
+      include: { orders: true },
     });
     if (!result)
       throw new HttpException('No order found', HttpStatus.BAD_REQUEST);
-    const orderIdMap = result.orders.map((e) => e.orderId);
-    await this.prismaService.order.deleteMany({
-      where: {
-        id: {
-          in: orderIdMap,
-        },
-      },
-    });
     await this.prismaService.orderDetail.delete({
       where: { id: result.id },
     });
@@ -71,19 +55,10 @@ export class OrderService {
   public async deleteItemInOrder(orderId: string, items: string[]) {
     const result = await this.prismaService.orderDetail.findUnique({
       where: { id: orderId },
-      include: { orders: { include: { data: true } } },
+      include: { orders: true },
     });
     if (!result)
       throw new HttpException('No order found', HttpStatus.BAD_REQUEST);
-    await this.prismaService.order.deleteMany({
-      where: {
-        id: {
-          in: result.orders
-            .filter((e) => e.name in items)
-            .map((e) => e.orderId),
-        },
-      },
-    });
     const updated = await this.prismaService.orderDetail.update({
       where: { id: result.id },
       data: {
@@ -96,11 +71,7 @@ export class OrderService {
         },
       },
       include: {
-        orders: {
-          include: {
-            data: true,
-          },
-        },
+        orders: true,
       },
     });
     if (updated.orders.length <= 0) {
