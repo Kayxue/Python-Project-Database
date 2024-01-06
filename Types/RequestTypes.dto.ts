@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from '@nestjs/swagger';
-import { IsArray, IsInt, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from "class-transformer"
 
 export class ItemData{
@@ -35,4 +35,12 @@ export class PostOrderBody {
     @ValidateNested({each:true})
     @Type(() => OrdersItem)
     public readonly orders: OrdersItem[];
+}
+
+export class DeleteItemBody{
+    @ApiProperty({type:[String]})
+    @IsOptional()
+    @IsArray()
+    @IsString({each:true})
+    public readonly items:string[]
 }

@@ -67,4 +67,48 @@ export class OrderService {
     });
     return 'Finished Deletion';
   }
+
+  public async deleteItemInOrder(orderId: string, items: string[]) {
+    const result = await this.prismaService.orderDetail.findUnique({
+      where: { id: orderId },
+      include: { orders: { include: { data: true } } },
+    });
+    if (!result)
+      throw new HttpException('No order found', HttpStatus.BAD_REQUEST);
+    await this.prismaService.order.deleteMany({
+      where: {
+        id: {
+          in: result.orders
+            .filter((e) => e.name in items)
+            .map((e) => e.orderId),
+        },
+      },
+    });
+    const updated = await this.prismaService.orderDetail.update({
+      where: { id: result.id },
+      data: {
+        orders: {
+          deleteMany: {
+            name: {
+              in: items,
+            },
+          },
+        },
+      },
+      include: {
+        orders: {
+          include: {
+            data: true,
+          },
+        },
+      },
+    });
+    if (updated.orders.length <= 0) {
+      await this.prismaService.orderDetail.delete({
+        where: { id: result.id },
+      });
+      return 'No item in order list, this order has already been deleted';
+    }
+    return updated;
+  }
 }

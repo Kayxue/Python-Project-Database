@@ -11,7 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { PostOrderBody } from '../../Types/RequestTypes.dto';
+import { DeleteItemBody, PostOrderBody } from '../../Types/RequestTypes.dto';
 import { ApiBody, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
 
 @Controller('order')
@@ -55,7 +55,14 @@ export class OrderController {
     return (await this.orderService.getOrder(orderId)) ?? {};
   }
 
+  @UsePipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  )
   @ApiParam({ name: 'id', type: () => String, description: 'Order to delete' })
+  @ApiBody({ type: DeleteItemBody, required: false })
   @ApiResponse({
     status: 200,
     description: 'Delete order completed',
@@ -65,7 +72,14 @@ export class OrderController {
     description: "Can't find the order",
   })
   @Delete('delete/:id')
-  public async deleteOrder(@Param('id') orderId: string) {
-    return this.orderService.deleteOrder(orderId);
+  public async deleteOrder(
+    @Param('id') orderId: string,
+    @Body() body?: DeleteItemBody,
+  ) {
+    if (!body.items?.length) {
+      return this.orderService.deleteOrder(orderId);
+    } else {
+      return this.orderService.deleteItemInOrder(orderId, body.items);
+    }
   }
 }
