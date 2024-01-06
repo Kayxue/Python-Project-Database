@@ -42,7 +42,6 @@ export class OrderService {
   public async deleteOrder(orderId: string) {
     const result = await this.prismaService.orderDetail.findUnique({
       where: { id: orderId },
-      include: { orders: true },
     });
     if (!result)
       throw new HttpException('No order found', HttpStatus.BAD_REQUEST);
@@ -55,7 +54,6 @@ export class OrderService {
   public async deleteItemInOrder(orderId: string, items: string[]) {
     const result = await this.prismaService.orderDetail.findUnique({
       where: { id: orderId },
-      include: { orders: true },
     });
     if (!result)
       throw new HttpException('No order found', HttpStatus.BAD_REQUEST);
