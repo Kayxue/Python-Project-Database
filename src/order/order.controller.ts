@@ -24,7 +24,7 @@ export class OrderController {
       forbidNonWhitelisted: true,
     }),
   )
-  @ApiBody({ type: PostOrderBody })
+  @ApiBody({ type: PostOrderBody, description: 'Order Detail' })
   @ApiResponse({
     status: 201,
     description:
@@ -62,10 +62,15 @@ export class OrderController {
     }),
   )
   @ApiParam({ name: 'id', type: () => String, description: 'Order to delete' })
-  @ApiBody({ type: DeleteItemBody, required: false })
+  @ApiBody({
+    type: DeleteItemBody,
+    required: false,
+    description:
+      'Items to delete in order. Delete full order if body not provided',
+  })
   @ApiResponse({
     status: 200,
-    description: 'Delete order completed',
+    description: 'Delete order completed or deleted items completed',
   })
   @ApiResponse({
     status: 400,
