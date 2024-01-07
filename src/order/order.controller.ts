@@ -12,8 +12,15 @@ import {
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { DeleteItemBody, PostOrderBody } from '../../Types/RequestTypes.dto';
-import { ApiBody, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiParam,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Order Handling')
 @Controller('order')
 export class OrderController {
   public constructor(private orderService: OrderService) {}
