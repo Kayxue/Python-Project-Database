@@ -48,7 +48,7 @@ export class OrderService {
     await this.prismaService.orderDetail.delete({
       where: { id: result.id },
     });
-    return 'Finished Deletion';
+    return 'Finished deletion';
   }
 
   public async deleteItemInOrder(orderId: string, items: string[]) {
